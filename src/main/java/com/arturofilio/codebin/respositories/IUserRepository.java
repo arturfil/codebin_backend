@@ -1,4 +1,4 @@
-package com.arturofilio.codebin;
+package com.arturofilio.codebin.respositories;
 
 import com.arturofilio.codebin.entities.UserEntity;
 

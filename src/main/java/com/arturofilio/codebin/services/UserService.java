@@ -3,8 +3,8 @@ package com.arturofilio.codebin.services;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import com.arturofilio.codebin.IUserRepository;
 import com.arturofilio.codebin.entities.UserEntity;
+import com.arturofilio.codebin.respositories.IUserRepository;
 import com.arturofilio.codebin.shared.Dto.UserDto;
 
 import org.springframework.beans.BeanUtils;
