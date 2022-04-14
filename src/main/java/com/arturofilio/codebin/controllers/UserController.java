@@ -25,6 +25,11 @@ public class UserController {
         return "GET/user_details";
     }
 
+    @GetMapping("/test")
+    public String testing() {
+        return "TESTING";
+    }
+
     @PostMapping
     public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
         UserRest userToReturn = new UserRest();
