@@ -8,7 +8,10 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.arturofilio.codebin.SpringApplicationContext;
 import com.arturofilio.codebin.models.requests.UserLoginRequestModel;
+import com.arturofilio.codebin.services.IUserService;
+import com.arturofilio.codebin.shared.Dto.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -53,7 +56,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_DATE))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET)
                 .compact();
-            
-            response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+        
+        IUserService userService = (IUserService) SpringApplicationContext.getBean("userService");
+        UserDto userDto = userService.getUser(username);
+        response.addHeader("UserId", userDto.getUserId());
+        response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+        
     }
 }
