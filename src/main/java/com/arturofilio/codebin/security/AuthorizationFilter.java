@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -31,8 +30,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        Authentication authenticationToken = getAuthentication(request);
+        UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(request);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
@@ -41,7 +41,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         if (token != null) {
             token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
             String user = Jwts.parser()
-                .setSigningKey(SecurityConstants.TOKEN_SECRET)
+                .setSigningKey(SecurityConstants.getTokenSecret())
                 .parseClaimsJws(token)
                 .getBody().getSubject();
 

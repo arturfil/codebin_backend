@@ -27,6 +27,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/api/users")
             .permitAll().anyRequest().authenticated()
             .and().addFilter(getAuthenticationFilter())
+            .addFilter(new AuthorizationFilter(authenticationManager()))
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
