@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import com.arturofilio.codebin.entities.UserEntity;
-import com.arturofilio.codebin.exceptions.EmailExistsException;
 import com.arturofilio.codebin.respositories.IUserRepository;
 import com.arturofilio.codebin.shared.Dto.UserDto;
 

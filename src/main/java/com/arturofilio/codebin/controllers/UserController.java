@@ -5,6 +5,7 @@ import com.arturofilio.codebin.models.responses.UserRest;
 import com.arturofilio.codebin.services.IUserService;
 import com.arturofilio.codebin.shared.Dto.UserDto;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,7 +29,8 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getPrincipal().toString();
         UserDto userDto = userService.getUser(email);
-        UserRest userToReturn = new UserRest();
+        ModelMapper mapper = new ModelMapper();
+        UserRest userToReturn = mapper.map(userDto, UserRest.class);
         BeanUtils.copyProperties(userDto, userToReturn);
         return userToReturn;
     }
