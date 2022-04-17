@@ -26,6 +26,9 @@ public class PostService implements IPostService {
     IUserRepository userRepository;
 
     @Autowired
+    ModelMapper mapper;
+
+    @Autowired
     ExposureRepository exposureRepository;
 
     @Override
@@ -42,7 +45,6 @@ public class PostService implements IPostService {
         postEntity.setExpiresAt(new Date(System.currentTimeMillis() + (post.getExpirationTime() * 60000)));
 
         PostEntity createdPost = postRepository.save(postEntity);
-        ModelMapper mapper = new ModelMapper();
         PostDto postToReturn = mapper.map(createdPost, PostDto.class);
         return postToReturn;
     }

@@ -2,6 +2,7 @@ package com.arturofilio.codebin;
 
 import com.arturofilio.codebin.security.AppProperties;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -30,5 +31,11 @@ public class CodebinApplication {
 	@Bean(name = "AppProperties")
 	public AppProperties getAppProperties() {
 		return new AppProperties();
+	}
+
+	@Bean
+	public ModelMapper modelMapper() {
+		ModelMapper mapper = new ModelMapper();
+		return mapper;
 	}
 }
