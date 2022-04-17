@@ -1,6 +1,8 @@
 package com.arturofilio.codebin.services;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import com.arturofilio.codebin.entities.ExposureEntity;
@@ -47,6 +49,25 @@ public class PostService implements IPostService {
         PostEntity createdPost = postRepository.save(postEntity);
         PostDto postToReturn = mapper.map(createdPost, PostDto.class);
         return postToReturn;
+    }
+
+    @Override
+    public List<PostDto> getLastPosts() {
+        long publicExposureId = 2;
+        List<PostEntity> postEntities = postRepository.getLastPublicPosts(publicExposureId, new Date(System.currentTimeMillis()));
+        List<PostDto> postDtos = new ArrayList<>();
+        for(PostEntity post: postEntities) {
+            PostDto postDto = mapper.map(post, PostDto.class);
+            postDtos.add(postDto);
+        }
+        return postDtos;
+    }
+
+    @Override
+    public PostDto getPost(String postId) {
+        PostEntity postEntity = postRepository.findByPostId(postId);
+        PostDto postDto = mapper.map(postEntity, PostDto.class);
+        return postDto;
     }
 
 }

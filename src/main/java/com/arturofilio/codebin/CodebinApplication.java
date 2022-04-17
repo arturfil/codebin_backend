@@ -1,6 +1,8 @@
 package com.arturofilio.codebin;
 
+import com.arturofilio.codebin.models.responses.UserRest;
 import com.arturofilio.codebin.security.AppProperties;
+import com.arturofilio.codebin.shared.Dto.UserDto;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +38,7 @@ public class CodebinApplication {
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper mapper = new ModelMapper();
+		mapper.typeMap(UserDto.class, UserRest.class).addMappings(m -> m.skip(UserRest::setPosts));
 		return mapper;
 	}
 }

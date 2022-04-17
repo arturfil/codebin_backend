@@ -1,6 +1,7 @@
 package com.arturofilio.codebin.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.arturofilio.codebin.models.requests.UserDetailsRequestModel;
@@ -60,9 +61,11 @@ public class UserController {
         List<PostRest> postRests = new ArrayList<>();
         for(PostDto post: posts) {
             PostRest postRest = mapper.map(post, PostRest.class);
+            if (postRest.getExpiresAt().compareTo(new Date(System.currentTimeMillis())) < 0) {
+                postRest.setExpired(true);
+            }
             postRests.add(postRest);
         }       
-        
         return postRests;
     }
 }
