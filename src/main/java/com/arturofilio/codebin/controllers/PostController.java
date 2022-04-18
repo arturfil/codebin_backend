@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.arturofilio.codebin.models.requests.PostCreateRequestModel;
+import com.arturofilio.codebin.models.responses.OperationStatusModel;
 import com.arturofilio.codebin.models.responses.PostRest;
 import com.arturofilio.codebin.services.IPostService;
 import com.arturofilio.codebin.services.IUserService;
@@ -16,9 +17,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -78,5 +81,26 @@ public class PostController {
             }
         }
         return postRest;
+    }
+
+    @PutMapping(path = "/{id}")
+    public PostRest updatePost(@RequestBody PostCreateRequestModel postCreateRequestModel, @PathVariable String id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto user = userService.getUser(authentication.getPrincipal().toString());
+        PostCreationDto postUpdateDto = mapper.map(postCreateRequestModel, PostCreationDto.class);
+        PostDto postDto = postService.updatePost(id, user.getId(), postUpdateDto);
+        PostRest updatedPost = mapper.map(postDto, PostRest.class);
+        return updatedPost;
+    }
+
+    @DeleteMapping(path="/{id}")
+    public OperationStatusModel deletePost(@PathVariable String id) {   
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto user = userService.getUser(authentication.getPrincipal().toString());
+        OperationStatusModel operationStatusModel = new OperationStatusModel();
+        operationStatusModel.setName("DELETE");
+        postService.deletePost(id, user.getId());
+        operationStatusModel.setResult("SUCCESS");
+        return operationStatusModel;
     }
 }
